@@ -1,35 +1,37 @@
 package ru.vsu.cs.suvorov_d_a;
 
-import org.junit.Test;
 import org.junit.Assert;
+import org.junit.Test;
+import org.junit.runner.RunWith;
+import org.junit.runners.Parameterized;
+
+import java.util.Arrays;
 import java.util.List;
-import ru.vsu.cs.suvorov_d_a.utils.ArrayUtils;
 
+@RunWith(Parameterized.class)
 public class TestOfFindingPairs {
-    @Test
-    public void testingArr1() {
-        int[] testingInputArray = ArrayUtils.readIntArrayFromFile("testSrc/testCase/input1.txt");
-        List<Integer> actualList = DifferentPairs.findPairsWithForLoop(testingInputArray, 5);
-        List<Integer> correctOutputList = ArrayUtils.readListFromFile("testSrc/testResult/output1.txt");
+    private final int[] inputArr;
+    private final int sum;
+    private final List<Integer> expectedResult;
 
-        Assert.assertEquals(correctOutputList, actualList);
+    public TestOfFindingPairs(int[] inputArr, int sum, List<Integer> expectedResult) {
+        this.inputArr = inputArr;
+        this.sum = sum;
+        this.expectedResult = expectedResult;
+    }
+
+    @Parameterized.Parameters
+    public static List<Object[]> cases() {
+        return Arrays.asList(new Object[][]{
+                {new int[]{1, 2, 3, 4, 5, 6, 7, 8, 9}, 5, List.of(3, 4)},
+                {new int[]{0, -1, -2}, -2, List.of(-2)},
+                {new int[]{2, 4, 6, 8, 10, 12, 13, -2}, 6, List.of(4, -2)},
+        });
     }
 
     @Test
-    public void testingArr2() {
-        int[] testingInputArray = ArrayUtils.readIntArrayFromFile("testSrc/testCase/input2.txt");
-        List<Integer> actualList = DifferentPairs.findPairsWithForLoop(testingInputArray, -3);
-        List<Integer> correctOutputList = ArrayUtils.readListFromFile("testSrc/testResult/output2.txt");
-
-        Assert.assertEquals(correctOutputList, actualList);
-    }
-
-    @Test
-    public void testingArr3() {
-        int[] testingInputArray = ArrayUtils.readIntArrayFromFile("testSrc/testCase/input3.txt");
-        List<Integer> actualList = DifferentPairs.findPairsWithForLoop(testingInputArray, 6);
-        List<Integer> correctOutputList = ArrayUtils.readListFromFile("testSrc/testResult/output3.txt");
-
-        Assert.assertEquals(correctOutputList, actualList);
+    public void findPairsTest() {
+        List<Integer> actualResult = DifferentPairs.findPairsWithForLoop(inputArr, sum);
+        Assert.assertEquals(expectedResult, actualResult);
     }
 }
